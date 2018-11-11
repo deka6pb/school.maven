@@ -19,8 +19,9 @@ https://maven.apache.org/pom.html
 Все POM-файлы являются наследниками родительского POM. Этот POM-файл называется Super POM и содержит значения, унаследованные по умолчанию.
 https://maven.apache.org/ref/3.0.4/maven-model-builder/super-pom.html
 
+```
 mvn help:effective-pom
-
+```
 
 # Жизненный цикл сборки:
 
@@ -46,10 +47,11 @@ mvn clean dependency:copy-dependencies package
 - clean
 - post-clean
 
-!! cp lifecycle/clean.pom.xml pom.xml
-!! mvn clean
-!! mvn clean:clean
-
+```
+cp lifecycle/clean.pom.xml pom.xml
+mvn clean
+mvn clean:clean
+```
 Используется плагин clean. В нем присутствует задача (goal) clean:clean которая привязана к фазе clean. Поэтому когда мы пишем mvn clean - мы вызываем фазу clean. А уже с ней вызывается привязанная к ней задача clean:clean.
 То есть каждый плагин всего лишь поставляет задачи, привязанные к определенным фазам.
 
@@ -65,10 +67,10 @@ verify — Запускаются интеграционные тесты
 install — Собранный ранее пакет устанавливается в локальный репозиторий и становится доступен для сборки других локальных проектов
 deploy — Пакет публикуется в удалённых репозиториях, устанавливается на серверы приложений и так далее
 
-
-!! cp lifecycle/default.pom.xml pom.xml
-!! mvn compile
-
+```
+cp lifecycle/default.pom.xml pom.xml
+mvn compile
+```
 Для тех кому интересно 23 фазы: https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 
 Вызывать вручную можно все фазы, но, обычно, фазы с ‘-‘ в названии не принято вызывать явно, так как они могут оставить сборку в неоконченном виде. Например, вызвав integration-test вместо verify вы останетесь с неубранным мусором от интеграционных тестов.
@@ -79,10 +81,10 @@ deploy — Пакет публикуется в удалённых репози�
 - site
 - post-site
 - site-deploy
-
-!! cp lifecycle/site.pom.xml pom.xml
-!! mvn site
-
+```
+cp lifecycle/site.pom.xml pom.xml
+mvn site
+```
 https://maven.apache.org/doxia/
 
 
@@ -125,8 +127,10 @@ javadoc - Генерирует Javadoc проекта.
 
 antrun - Запускает набор задач ant из любой указанной фазы.
 
-!! cp plugins/complie.pom.xml pom.xml
-!! mvn compile
+```
+cp plugins/complie.pom.xml pom.xml
+mvn compile
+```
 
 http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Built-in_Lifecycle_Bindings
 
@@ -148,18 +152,23 @@ pom.xml - для проекта
 - Существующими, отсутствующими файлами.
 
 Из командной строки:
-!! cp profiles/test.environment.pom.xml pom.xml
-!! mvn clean test -Ptest
-!! mvn clean test -Pnormal
+```
+cp profiles/test.environment.pom.xml pom.xml
+mvn clean test -Ptest
+mvn clean test -Pnormal
+```
 
 Из settings.xml
-!! cp profiles/settings.xml ~/.m2/settings.xml
-!! mvn test
+```
+cp profiles/settings.xml ~/.m2/settings.xml
+mvn test
+```
 
 Из pom.xml
-!! rm ~/.m2/settings.xml
-!! cp profiles/pom.activation.profile.pom.xml pom.xml
-
+```
+rm ~/.m2/settings.xml
+cp profiles/pom.activation.profile.pom.xml pom.xml
+```
 Можно посомтреть полный pom.xml
 mvn help:effective-pom -P test
 
@@ -175,10 +184,10 @@ ${maven.home}/conf/settings.xml - глобальный
 ${user.home}/.m2/settings.xml - пользовательский
 
 Если оба файла существуют, их содержимое объединяется, а пользовательские settings.xml являются доминирующими.
-
-!! cp settings/simple.settings.xml ~/.m2/settings.xml
-!! less ~/.m2/settings.xml
-
+```
+cp settings/simple.settings.xml ~/.m2/settings.xml
+less ~/.m2/settings.xml
+```
 Полный перечень settings:
 https://maven.apache.org/settings.html
 
@@ -219,10 +228,12 @@ pluginGroups
 - Глобальный
 
 Так выглядит настройка удаленного репозитория:
-!! cp repositories/remote.pom.xml pom.xml
-
-
-!! less repositories/snapshot.pom.xml pom.xml
+```
+cp repositories/remote.pom.xml pom.xml
+```
+```
+less repositories/snapshot.pom.xml pom.xml
+```
 
 # Транзитивные зависимости
 
@@ -233,7 +244,7 @@ pluginGroups
 
 По дефолту будет выбрана версия SNAPSHOT 2.1, потому что граф короче.
 Если мы хотим явно указать, то это можно сделать в:
-
+```
 <dependencyManagement>
     <dependencies>
         <dependency>
@@ -243,16 +254,18 @@ pluginGroups
         </dependency>
     </dependencies>
 </dependencyManagement>
+```
 
 https://www.youtube.com/watch?v=LbhFO3im6vo
 
-
-!! cp dependencies/external.pom.xml pom.xml
-!! mvn package
-
+```
+cp dependencies/external.pom.xml pom.xml
+mvn package
+```
 dependencyManagement
 
 Parent:
+```
 <dependencyManagement>
   <dependencies>
     <dependency>
@@ -263,15 +276,16 @@ Parent:
     </dependency>
   </dependencies>
 </dependencyManagement>
-
+```
 Child:
+```
 <dependencies>
   <dependency>
     <groupId>junit</groupId>
     <artifactId>junit</artifactId>
   </dependency>
 </dependencies>
-
+```
 # Scope
 Scope позволяет указать maven’у когда и для чего вам нужна эта зависимость. Всего существует шесть областей видимости:
 
@@ -289,7 +303,9 @@ system — зависимость которая присутствует в с�
 
 import — использутся для импорта зависимостей из других артефактов и управлением зависимостями в сложных пакетах, состоящих из нескольких артефактов.
 
-!! cp scope/scope.pom.xml pom.xml
+```
+cp scope/scope.pom.xml pom.xml
+```
 
 org.projectlombok:lombok — утилита для генерации кода, работающая только во время компиляции. Поэтому у неё scope — provided
 
@@ -301,7 +317,7 @@ junit:junit — Фреймворк юнит-тестирования. Очеви
 
 
 # Исключение зависимостей
-
+```
 <dependency>
   <groupId>org.dbunit</groupId>
   <artifactId>dbunit</artifactId>
@@ -320,7 +336,7 @@ junit:junit — Фреймворк юнит-тестирования. Очеви
     </exclusion>
   </exclusions>
 </dependency>
-
+```
 Я знаю, что unitils-dbmaintainer зависит от dbunit предыдущей версии, но тесты моего приложения зависят от более новой версии. Поэтому я явно добавляю зависимость от dbunit нужной мне версии и исключаю старый dbunit из зависимостей unitils-dbmaintainer.
 
 # Snapshot
@@ -336,7 +352,9 @@ mvn clean package -U помогает подтягивать изменения 
 
 # Автоматизация развёртывания
 
-!! cp deployment/deploy.pom.xml pom.xml
+```
+cp deployment/deploy.pom.xml pom.xml
+```
 
 Repositories - Место, где выполняется сборка JAR, WAR, или EAR или другие артифакты, которые будут получены в случае успешной сборки.
 Plugin - Элемент maven-release-plugin сконфигурирован для автоматизации процесса развёртывания.
@@ -363,10 +381,11 @@ https://easyjava.ru/ecosystem/buildtools/maven
 https://proselyte.net/tutorials/maven/
 
 
-Вопрос/Ответ на лекции:
-1. Почему не вызывался post-clean? У жизненного цикла есть 3 фазы: pre-clean, clean, post-clean. Если мы вызовем mvn clean, то пройдем всего 2 фазы из трех. Если вызовем mvn post-clean, то вызовем все 3 фазы и пройдем весь жизненный цикл. pre и post фазы присутствуют только в жизненном цикле clean. Они не связаны с фазой clean. Это 3 равноценные фазы, как допустим в Default жизненном цикле validate и compile.
-2. Что за фаза site-deploy? если вы хотите сгенерировать сайт и развернуть его за один раз, вы можете использовать фазу site-deploy для жизненного цикла сайта. Для этого просто выполните: mvn site-deploy. Более подробно можно почитать здесь: https://maven.apache.org/plugins/maven-site-plugin/usage.html
-3. Какие могут быть goal? Goal run встроен в maven? Goal поставляет нам плагин. Goal run присутствует в плагине maven-antrun-plugin. Еще примеры:
+## Вопрос/Ответ на лекции:
+- Почему не вызывался post-clean? У жизненного цикла есть 3 фазы: pre-clean, clean, post-clean. Если мы вызовем mvn clean, то пройдем всего 2 фазы из трех. Если вызовем mvn post-clean, то вызовем все 3 фазы и пройдем весь жизненный цикл. pre и post фазы присутствуют только в жизненном цикле clean. Они не связаны с фазой clean. Это 3 равноценные фазы, как допустим в Default жизненном цикле validate и compile.
+- Что за фаза site-deploy? если вы хотите сгенерировать сайт и развернуть его за один раз, вы можете использовать фазу site-deploy для жизненного цикла сайта. Для этого просто выполните: mvn site-deploy. Более подробно можно почитать здесь: https://maven.apache.org/plugins/maven-site-plugin/usage.html
+- Какие могут быть goal? Goal run встроен в maven? Goal поставляет нам плагин. Goal run присутствует в плагине maven-antrun-plugin. Еще примеры:
+```
 <plugin>
     <groupId>org.liquibase</groupId>
     <artifactId>liquibase-maven-plugin</artifactId>
@@ -395,10 +414,10 @@ https://proselyte.net/tutorials/maven/
         </execution>
     </executions>
 </plugin>
-Пример взят отсюда: https://stackoverflow.com/questions/33146819/different-maven-configurations-for-different-goals
-4. Можно ли установить scope provided для какой-либо кастомной библиотеки? Судя по всему нет. Только Jdk и Web container.
-5. Приоритет profile?
-1) System properties: set with -Dxyz=value on the command line.
-2) From currently active profile(s): settings.xml in user home directory first, then profiles.xml in project root directory, then in profiles defined in your pom.xml.If many profiles are active, and a property is defined in more than one of those, the order of precedence is based on the last profile in which this property is defined, in alphabetical order of profile name.
-3) In the properties section of your pom.xml.
-4) Lastly, in properties defined in filters. If a property is defined in multiple filters, then the last one (in order of appearance in your filters section) has precedence over the others.
+```
+- Можно ли установить scope provided для какой-либо кастомной библиотеки? Судя по всему нет. Только Jdk и Web container.
+- Приоритет profile?
+    1) System properties: set with -Dxyz=value on the command line.
+    2) From currently active profile(s): settings.xml in user home directory first, then profiles.xml in project root directory, then in profiles defined in your pom.xml.If many profiles are active, and a property is defined in more than one of those, the order of precedence is based on the last profile in which this property is defined, in alphabetical order of profile name.
+    3) In the properties section of your pom.xml.
+    4) Lastly, in properties defined in filters. If a property is defined in multiple filters, then the last one (in order of appearance in your filters section) has precedence over the others.
