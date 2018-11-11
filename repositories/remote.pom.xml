@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+   http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>school</groupId>
+    <artifactId>maven-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.proselyte.private-lib</groupId>
+            <artifactId>private-lib</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>proselyte.lib1</id>
+            <url>http://download.proselyte.net/maven2/lib1</url>
+        </repository>
+        <repository>
+            <id>proselyte.lib2</id>
+            <url>http://download.proselyte.net/maven2/lib2</url>
+        </repository>
+    </repositories>
+</project>
